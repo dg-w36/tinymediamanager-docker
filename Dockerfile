@@ -10,6 +10,7 @@ ARG TMM_VERSION=3.1.8
 # Define software download URLs.
 ARG TMM_URL=http://release.tinymediamanager.org/v3/dist/tmm_${TMM_VERSION}_linux.tar.gz
 ARG JAVAJRE_URL=https://corretto.aws/downloads/resources/${JAVAJRE_VERSION}/amazon-corretto-${JAVAJRE_VERSION}-linux-x64.tar.gz
+ARG CHINESE_FONT_URL=https://github.com/adobe-fonts/source-han-sans/releases/download/2.001R/SourceHanSans.ttc
 ENV JAVA_HOME=/opt/jre/bin
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/jre/bin
 # Define working directory.
@@ -39,6 +40,13 @@ RUN \
         libmediainfo \
         ttf-dejavu \
         bash
+
+# Install Chinese Fonts
+RUN \
+    wget ${CHINESE_FONT_URL}} -O /defaults/SourceHanSans.ttc && \
+    mkdir -p /usr/share/fonts/chinese && \
+    mv /defaults/SourceHanSans.ttc /usr/share/fonts/chinese && \
+    fc-cache
 
 # Maximize only the main/initial window.
 # It seems this is not needed for TMM 3.X version.
